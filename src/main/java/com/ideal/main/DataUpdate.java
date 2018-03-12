@@ -45,6 +45,7 @@ public class DataUpdate {
             logger.error(e);
         }
     }
+
     /**
      * 上传文件
      *
@@ -68,25 +69,26 @@ public class DataUpdate {
             flag = true;
             logger.info("上传文件到FTP成功");
         } catch (Exception e) {
-            logger.error(e+"上传文件到FTP失败");
+            logger.error(e + "上传文件到FTP失败");
         } finally {
             if (ftpClient.isConnected()) {
                 try {
                     ftpClient.disconnect();
                 } catch (IOException e) {
-                    logger.error(e+"关闭FTP连接时发生错误");
+                    logger.error(e + "关闭FTP连接时发生错误");
                 }
             }
             if (null != inputStream) {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
-                    logger.error(e+"上传到FTP的文件流关闭异常");
+                    logger.error(e + "上传到FTP的文件流关闭异常");
                 }
             }
         }
         return true;
     }
+
     //改变目录路径
     public boolean changeWorkingDirectory(String directory) {
         boolean flag = true;
@@ -144,6 +146,7 @@ public class DataUpdate {
         }
         return success;
     }
+
     //判断ftp服务器文件是否存在
     public boolean existFile(String path) throws IOException {
         boolean flag = false;
@@ -153,6 +156,7 @@ public class DataUpdate {
         }
         return flag;
     }
+
     //创建目录
     public boolean makeDirectory(String dir) {
         boolean flag = true;
@@ -165,23 +169,17 @@ public class DataUpdate {
                 logger.info("创建文件夹" + dir + " 失败！");
             }
         } catch (Exception e) {
-            logger.error(e+"在加载FTP相关文件夹时出错");
+            logger.error(e + "在加载FTP相关文件夹时出错");
         }
         return flag;
     }
+
     public static void main(String[] args) {
         SqlUtil s = new SqlUtil();
         DataUpdate ftp = new DataUpdate();
-        if(SqlServerJDBC.Exp()!=null){
-            ftp.uploadFile(s.getFtpPath(), s.getTablename()+".txt", SqlServerJDBC.Exp());
-//                FtpConnection fc=new FtpConnection();
-//                fc.FtpToHadp();
-            logger.info("success!");
-        }else {
-            logger.info("fail!");
-        }
-
-
-
+        ftp.uploadFile(s.getFtpPath(), s.getTablename() + ".txt", SqlServerJDBC.Exp());
+        FtpConnection fc = new FtpConnection();
+        fc.FtpToHadp();
     }
 }
+
